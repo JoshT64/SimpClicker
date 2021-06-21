@@ -1,0 +1,60 @@
+html {
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  min-height: 100vh;
+  max-width: 170vh;
+}
+
+.simp-buck {
+  display: flex;
+  align-items: flex-end;
+  color: rgb(15, 177, 15);
+}
+
+.viewer {
+  display: flex;
+  align-items: flex-end;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.simp-coin {
+  float: right;
+  position: relative;
+  /* transition: all 0.2s ease-in-out; */
+  animation: bounce 1.2s ease-out infinite;
+  /* left: 270px;
+  margin: 0; */
+}
+/* .simp-coin:active {
+  
+} */
+
+.simp-active:active {
+  transform: scale(0.95, 1.03) translate(15px, 5px);
+}
+
+@keyframes bounce {
+  0% {
+    transform: scaleX(1, 1);
+  }
+  50% {
+    transform: scale(1.03, 0.95) translateY(-5px);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
