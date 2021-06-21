@@ -1,2 +1,2 @@
 # SimpClicker
-Created with CodeSandbox
+SIMPle Idle Clicker game... for now.. ;)
