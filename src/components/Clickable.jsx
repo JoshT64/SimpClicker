@@ -5,9 +5,6 @@ import AccessibleForwardIcon from "@material-ui/icons/AccessibleForward";
 import MoneyIcon from "@material-ui/icons/Money";
 import farms from "../farms.js";
 import FarmButton from "./Button";
-import simpbuckspends from "../simpbuckspends.js";
-
-let multiplier = 1;
 
 function Clickable() {
   const [clickCount, setClickCount] = useState(0);
@@ -16,8 +13,7 @@ function Clickable() {
   const [open, setOpen] = useState(false);
   const [notEnoughCookies, setNotEnoughCookies] = useState(false);
   const [farmsOwned, setFarmsOwned] = useState([]);
-  const [simpMultiplier, setSimpMultiplier] = useState(0);
-  // const [farmInc, setFarmInc] = useState(1);
+  const [farmInc, setFarmInc] = useState(1);
 
   useEffect(() => {
     function simpBucksFunc() {
@@ -34,34 +30,16 @@ function Clickable() {
     setFarmsOwned(farms);
   }, []);
 
-  // useEffect(() => {
-  //   if (farmsOwned.length > 0) {
-  //     const currentFarms = farmsOwned;
-  //     const sortedFarms = currentFarms.sort((a, b) => {
-  //       return a.id > b.id ? 1 : -1;
-  //     });
-  //     setFarmsOwned(sortedFarms);
-  //     console.log(sortedFarms);
-  //   }
-  // }, [farmsOwned]);
-
-  // Todo: multiplier function w/ SimpBucks
-
-  function multiplierFunction(simpName) {
-    console.log("test");
-
-    const multiplierFind = simpbuckspends.find(
-      (simpMultiplier, idx) => simpbuckspends.name === simpName
-    );
-    console.log(simpbuckspends[0].multiplier);
-
-    simpbuckspends.map((spends) => {
-      return setSimpMultiplier((prevMultiplier) => {
-        prevMultiplier += spends.multiplier;
+  useEffect(() => {
+    if (farmsOwned.length > 0) {
+      const currentFarms = farmsOwned;
+      const sortedFarms = currentFarms.sort((a, b) => {
+        return a.id > b.id ? 1 : -1;
       });
-    });
-  }
-  // multiplierFunction();
+      setFarmsOwned(sortedFarms);
+      console.log(sortedFarms);
+    }
+  }, [farmsOwned]);
 
   function purchaseItem(increment, spend, farmName, time) {
     if (clickCount >= spend) {
@@ -69,19 +47,17 @@ function Clickable() {
       setClickCount(clickCount - spend);
 
       const farmFind = farmsOwned.find((farm, idx) => farm.value === farmName);
-      console.log(farmFind);
+      console.log();
 
-      var num = (farmFind.increment *= multiplier);
       setFarmsOwned([
         //populate object
-
         ...farmsOwned.filter((farm) => farm.value !== farmName),
         {
           name: farmFind.name,
           amount: (farmFind.amount += 1), //amount of farms owned
           value: farmFind.value, //unique name
-          increment: (farmFind.increment *= num),
-          cost: (farmFind.cost *= 1.3),
+          increment: farmFind.increment,
+          cost: farmFind.cost,
           description: farmFind.description,
           id: farmFind.id,
           key: farmFind.id
@@ -94,7 +70,7 @@ function Clickable() {
         });
         setFarmsOwned(sortedFarms);
       }
-
+      console.log(farmsOwned);
       // (event.target.getAttribute("name"))
     } else {
       //Break function - not enough currency
@@ -105,6 +81,8 @@ function Clickable() {
     // setFarmInc((prevFarmInc) => prevFarmInc + increment);
     var intervalID;
     farmsOwned.map((farm) => {
+      console.log("inc" + farm.increment);
+
       if (clickCount !== 0) {
         function update() {
           setClickCount(
@@ -152,7 +130,7 @@ function Clickable() {
           SimpBucks: {simpBucks}
         </p>
       </div>
-      <button onClick={multiplierFunction}>Add +</button>
+
       <hr></hr>
       {notEnoughCookies ? (
         <div>
@@ -165,12 +143,11 @@ function Clickable() {
       ) : null}
       <div style={{ padding: "1rem" }}>Shop: </div>
       {farmsOwned.map((farm) => {
-        var farmCost = JSON.stringify(Math.round(farm.cost)) + " ";
         return (
           <FarmButton
             purchaseItem={purchaseItem}
             name={farm.name}
-            description={farmCost + farm.description}
+            description={farm.description}
             currentC={farm.amount}
             value={farm.value}
             cost={farm.cost}
